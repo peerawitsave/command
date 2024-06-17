@@ -21,3 +21,12 @@ sudo -u postgres /usr/pgsql-16/bin/pgbench -i pgbench
 
 
 sudo -u postgres /usr/pgsql-16/bin/pgbench -c 10 -t 1000 pgbench
+
+
+wget https://github.com/prometheus-community/postgres_exporter/releases/download/v0.10.0/postgres_exporter-0.10.0.linux-amd64.tar.gz
+
+
+tar xvf postgres_exporter-0.10.0.linux-amd64.tar.gz
+
+
+sudo mv postgres_exporter /usr/local/bin/
