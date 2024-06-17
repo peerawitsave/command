@@ -84,3 +84,7 @@ gpgkey=https://rpm.grafana.com/gpg.key
 sslverify=1
 sslcacert=/etc/pki/tls/certs/ca-bundle.crt
 
+sudo chown -R grafana:grafana /etc/grafana
+sudo chown -R grafana:grafana /var/lib/grafana
+sudo chown -R grafana:grafana /var/log/grafana
+
