@@ -30,3 +30,22 @@ tar xvf postgres_exporter-0.10.0.linux-amd64.tar.gz
 
 
 sudo mv postgres_exporter /usr/local/bin/
+
+
+
+
+[Unit]
+Description=PostgreSQL Exporter for Prometheus
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=postgres
+Group=postgres
+Environment=DATA_SOURCE_NAME=postgresql://postgres_exporter:password@localhost:5432/postgres?sslmode=disable
+ExecStart=/usr/local/bin/postgres_exporter
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
