@@ -88,3 +88,34 @@ sudo chown -R grafana:grafana /etc/grafana
 sudo chown -R grafana:grafana /var/lib/grafana
 sudo chown -R grafana:grafana /var/log/grafana
 
+
+
+wget https://github.com/prometheus/alertmanager/releases/download/v0.23.0/alertmanager-0.23.0.linux-amd64.tar.gz
+
+tar xvf alertmanager-0.23.0.linux-amd64.tar.gz
+
+sudo mv alertmanager-0.23.0.linux-amd64/alertmanager /usr/local/bin/
+sudo mv alertmanager-0.23.0.linux-amd64/amtool /usr/local/bin/
+
+sudo mkdir /etc/alertmanager
+
+sudo nano /etc/alertmanager/alertmanager.yml
+
+sudo nano /etc/systemd/system/alertmanager.service
+
+
+[Unit]
+Description=Prometheus Alertmanager Service
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=alertmanager
+Group=alertmanager
+ExecStart=/usr/local/bin/alertmanager --config.file=/etc/alertmanager/alertmanager.yml
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+
