@@ -118,4 +118,36 @@ Restart=always
 [Install]
 WantedBy=multi-user.target
 
+global:
+  resolve_timeout: 5m
+
+route:
+  receiver: 'default-receiver'
+
+receivers:
+  - name: 'default-receiver'
+    email_configs:
+      - to: 'peerawit2010@gmail.com'
+        from: 'alertmanager@example.com'
+        smarthost: 'localhost:25'
+
+
+
+
+
+[Unit]
+Description=Prometheus Alertmanager Service
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=alertmanager
+Group=alertmanager
+ExecStart=/usr/local/bin/alertmanager --config.file=/etc/alertmanager/alertmanager.yml --storage.path=/var/lib/alertmanager --log.level=debug
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+
 
