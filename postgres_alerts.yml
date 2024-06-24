@@ -1,0 +1,56 @@
+groups:
+- name: postgresql_alerts
+  rules:
+  - alert: PostgreSQLMaxConnectionsReached
+    expr: pg_stat_activity_count{job="postgres_exporter"} >= pg_settings_max_connections{job="postgres_exporter"}
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "PostgreSQL has run out of available connections"
+      description: "Postgres has reached the maximum number of connections."
+
+  - alert: PostgreSQLHighConnections
+    expr: pg_stat_activity_count{job="postgres_exporter"} >= (pg_settings_max_connections{job="postgres_exporter"} * 0.8)
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "PostgreSQL connections are high"
+      description: "Postgres connections are at 80% of the maximum limit."
+
+  - alert: PostgreSQLDown
+    expr: up{job="postgres_exporter"} == 0
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: "PostgreSQL is down"
+      description: "The PostgreSQL exporter is not reachable."
+
+  - alert: PostgreSQLSlowQueries
+    expr: pg_stat_statements_max_exec_time_seconds{job="postgres_exporter"} > 1
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "PostgreSQL has slow queries"
+      description: "There are slow queries in PostgreSQL."
+
+  - alert: PostgreSQLQPS
+    expr: rate(pg_stat_statements_calls_total{job="postgres_exporter"}[1m]) > 100
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High queries per second"
+      description: "PostgreSQL has a high number of queries per second."
+
+  - alert: PostgreSQLCacheHitRatio
+    expr: (pg_stat_database_blks_hit{job="postgres_exporter"} / (pg_stat_database_blks_hit{job="postgres_exporter"} + pg_stat_database_blks_read{job="postgres_exporter"})) < 0.8
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Low cache hit rate"
+      description: "PostgreSQL has a low cache hit rate."

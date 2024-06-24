@@ -1,0 +1,22 @@
+global:
+  resolve_timeout: 5m
+
+route:
+  receiver: 'email-notifications'
+  group_by: ['alertname']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 12h
+
+receivers:
+- name: 'email-notifications'
+  email_configs:
+  - to: 'devops@got.co.th'
+    from: 'gotnotify@got.co.th'
+    smarthost: 'smtp.got.co.th:587'
+    auth_username: 'gotnotify@got.co.th'
+    auth_password: 'P@ssuu0rD1$t0rage12345'
+    auth_identity: 'gotnotify@got.co.th'
+    headers:
+      Subject: '[Alertmanager] {{ .CommonLabels.alertname }}'
+      From: 'gotnotify@got.co.th'
