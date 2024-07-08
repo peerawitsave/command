@@ -1,0 +1,5 @@
+sudo apt install postgresql postgresql-contrib
+pgbench --version
+sudo -u postgres createdb pgbench
+sudo -u postgres pgbench -i pgbench
+sudo -u postgres pgbench -c 10 -t 1000 pgbench
